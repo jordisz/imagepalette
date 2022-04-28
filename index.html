@@ -4,26 +4,25 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./styles.css" />
     <title>Color Palette Extractor</title>
   </head>
   <body>
-    <form method="post" enctype="multipart/form-data">
-      <div>
-        <label for="upload_img">Choose images to upload (PNG, JPG)</label>
-        <input
-          type="file"
-          id="upload_img"
-          name="upload_img"
-          accept=".jpg, .jpeg, .png"
-        />
-      </div>
-      <div class="preview">
-        <p>No files currently selected for upload</p>
-      </div>
-      <div>
-        <button>Submit</button>
-      </div>
-    </form>
+    <div class="container">
+      <h1>Color Palette Extractor</h1>
+      <form class="form" method="post" enctype="multipart/form-data">
+        <div>
+          <label for="upload_img">Upload an image (PNG, JPG)</label>
+          <input
+            type="file"
+            id="upload_img"
+            name="upload_img"
+            accept=".jpg, .jpeg, .png"
+          />
+        </div>
+      </form>
+      <div class="preview"></div>
+    </div>
   </body>
   <script src="./imagepalette.js"></script>
 </html>
