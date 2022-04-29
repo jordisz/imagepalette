@@ -76,7 +76,7 @@ function showImage(image) {
           img.height * ratio
         );
         const rgbValues = getImgRgb(imageData.data);
-        console.log(findBiggestColorRange(rgbValues));
+        console.log(quantization(rgbValues, 0));
       };
     }
   };
@@ -134,6 +134,40 @@ function returnFileSize(number) {
   } else if (number >= 1048576) {
     return (number / 1048576).toFixed(1) + "MB";
   }
+}
+
+function quantization(pixels, depth) {
+  const MAX_DEPTH = 4;
+  if (depth === MAX_DEPTH || pixels.length === 0) {
+    const color = pixels.reduce(
+      (prev, cur) => {
+        prev.r += cur.r;
+        prev.g += cur.g;
+        prev.b += cur.b;
+
+        return prev;
+      },
+      {
+        r: 0,
+        g: 0,
+        b: 0,
+      }
+    );
+    color.r = Math.round(color.r / pixels.length);
+    color.g = Math.round(color.g / pixels.length);
+    color.b = Math.round(color.b / pixels.length);
+    return [color];
+  }
+
+  const dominantComponent = findBiggestColorRange(pixels);
+  pixels.sort((p1, p2) => {
+    return p1[dominantComponent] - p2[dominantComponent];
+  });
+  const mid = pixels.length / 2;
+  return [
+    ...quantization(pixels.slice(0, mid), depth + 1),
+    ...quantization(pixels.slice(mid + 1), depth + 1),
+  ];
 }
 
 function validFileType(file) {
