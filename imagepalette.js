@@ -1,5 +1,5 @@
 const input = document.querySelector("input");
-const preview = document.querySelector(".preview");
+const preview = document.querySelector(".img-info");
 const canvas = document.querySelector(".canvas");
 const context = canvas.getContext("2d");
 
@@ -30,10 +30,11 @@ function updateImageDisplay() {
     preview.appendChild(info);
   } else {
     const info = document.createElement("p");
+    info.classList.add("multiline-info");
     if (validFileType(selectedFile)) {
       info.textContent = `File name: ${
         selectedFile.name
-      }, size: ${returnFileSize(selectedFile.size)}.`;
+      } \r\nFile size: ${returnFileSize(selectedFile.size)}.`;
       showImage(selectedFile);
       preview.appendChild(info);
     } else {
@@ -50,14 +51,49 @@ function showImage(image) {
   reader.onload = (e) => {
     if (e.target.readyState == FileReader.DONE) {
       img.src = reader.result;
-      // now we have to wait the image to load
+      // now we have to wait for the image to load ;)
       img.onload = () => {
-        canvas.width = img.width;
-        canvas.height = img.height;
-        context.drawImage(img, 0, 0);
+        const hRatio = canvas.width / img.width;
+        const vRatio = canvas.height / img.height;
+        const ratio = Math.min(hRatio, vRatio);
+        const centerShift_x = (canvas.width - img.width * ratio) / 2;
+        const centerShift_y = (canvas.height - img.height * ratio) / 2;
+        context.drawImage(
+          img,
+          0,
+          0,
+          img.width,
+          img.height,
+          centerShift_x,
+          centerShift_y,
+          img.width * ratio,
+          img.height * ratio
+        );
+        const imageData = context.getImageData(
+          centerShift_x,
+          centerShift_y,
+          img.width * ratio,
+          img.height * ratio
+        );
+        console.log(imageData);
+
+        console.log(getImgRgb(imageData.data));
       };
     }
   };
+}
+
+function getImgRgb(imageData) {
+  const rgbValues = [];
+  for (let i = 0; i < imageData.length; i += 4) {
+    const rgb = {
+      r: imageData[i],
+      g: imageData[i + 1],
+      b: imageData[i + 2],
+    };
+    rgbValues.push(rgb);
+  }
+  return rgbValues;
 }
 
 function returnFileSize(number) {
