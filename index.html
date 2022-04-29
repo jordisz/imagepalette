@@ -10,7 +10,7 @@
   <body>
     <div class="container">
       <h1>Color Palette Extractor</h1>
-      <form class="form" method="post" enctype="multipart/form-data">
+      <form class="form" action="#">
         <div>
           <label for="upload_img">Upload an image (PNG, JPG)</label>
           <input
@@ -22,6 +22,8 @@
         </div>
       </form>
       <div class="preview"></div>
+      <canvas class="canvas"></canvas>
+      <div class="palette"></div>
     </div>
   </body>
   <script src="./imagepalette.js"></script>
