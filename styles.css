@@ -1,12 +1,18 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap");
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
+body {
+  font-family: "Roboto", sans-serif;
+}
+
 .container {
   margin: auto;
-  width: max(350px, 70vw);
+  width: max(340px, 70vw);
   padding-top: 5vh;
 }
 
@@ -18,7 +24,7 @@ h1 {
 .form {
   width: fit-content;
   margin: 3vh auto 0;
-  padding: 1.8rem;
+  padding: 1.5rem;
   border: 1px solid crimson;
   border-radius: 10px;
 }
@@ -29,4 +35,13 @@ input[type="file"] {
 
 ::file-selector-button {
   font-size: initial;
+}
+
+.img-info,
+.canvas {
+  margin-top: 3vh;
+}
+
+.multiline-info {
+  white-space: pre;
 }
