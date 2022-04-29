@@ -1,5 +1,7 @@
 const input = document.querySelector("input");
 const preview = document.querySelector(".preview");
+const canvas = document.querySelector(".canvas");
+const context = canvas.getContext("2d");
 
 // Valid image file types -> https://developer.mozilla.org/en-US/docs/Web/Media/Formats/Image_types
 const fileTypes = [
@@ -32,15 +34,30 @@ function updateImageDisplay() {
       info.textContent = `File name: ${
         selectedFile.name
       }, size: ${returnFileSize(selectedFile.size)}.`;
-      const image = document.createElement("img");
-      image.src = URL.createObjectURL(selectedFile);
+      showImage(selectedFile);
       preview.appendChild(info);
-      preview.appendChild(image);
     } else {
       info.textContent = `File name ${selectedFile.name}: Not a valid file type.`;
       preview.appendChild(info);
     }
   }
+}
+
+function showImage(image) {
+  const img = new Image();
+  const reader = new FileReader();
+  reader.readAsDataURL(image);
+  reader.onload = (e) => {
+    if (e.target.readyState == FileReader.DONE) {
+      img.src = reader.result;
+      // now we have to wait the image to load
+      img.onload = () => {
+        canvas.width = img.width;
+        canvas.height = img.height;
+        context.drawImage(img, 0, 0);
+      };
+    }
+  };
 }
 
 function returnFileSize(number) {
