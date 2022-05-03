@@ -50,6 +50,7 @@ function showImage(image) {
   reader.readAsDataURL(image);
   reader.onload = (e) => {
     if (e.target.readyState == FileReader.DONE) {
+      context.clearRect(0, 0, canvas.width, canvas.height);
       img.src = reader.result;
       // now we have to wait for the image to load ;)
       img.onload = () => {
