@@ -59,6 +59,7 @@ input[type="file"] {
   margin-inline: auto;
   display: flex;
   flex-wrap: wrap;
+  gap: 1px;
 }
 
 .palette div {
@@ -68,5 +69,5 @@ input[type="file"] {
   justify-content: center;
   align-items: center;
   color: white;
-  text-shadow:  1px 1px 3px #000000;;
+  text-shadow: 1px 1px 3px #000000;
 }
