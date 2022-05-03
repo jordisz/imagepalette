@@ -37,11 +37,34 @@ input[type="file"] {
   font-size: initial;
 }
 
-.img-info,
-.canvas {
-  margin-top: 3vh;
+.img-container {
+  margin-top: 3rem;
+  display: flex;
+  justify-content: space-around;
+  max-width: 80vw;
+}
+
+.img-info {
+  display: flex;
+  align-items: center;
 }
 
 .multiline-info {
   white-space: pre;
+}
+
+.palette {
+  max-width: 24rem;
+  margin-top: 3rem;
+  margin-inline: auto;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.palette div {
+  width: 6rem;
+  height: 3rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
