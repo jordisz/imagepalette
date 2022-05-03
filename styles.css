@@ -54,7 +54,7 @@ input[type="file"] {
 }
 
 .palette {
-  max-width: 24rem;
+  max-width: 28rem;
   margin-top: 3rem;
   margin-inline: auto;
   display: flex;
@@ -70,4 +70,18 @@ input[type="file"] {
   align-items: center;
   color: white;
   text-shadow: 1px 1px 3px #000000;
+}
+
+@media (max-width: 580px) {
+  .img-container {
+    flex-direction: column;
+  }
+  .img-info {
+    margin-top: 1rem;
+    justify-content: center;
+  }
+  .palette {
+    max-width: 360px;
+    justify-content: center;
+  }
 }
