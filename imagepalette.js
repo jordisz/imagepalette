@@ -19,6 +19,7 @@ const fileTypes = [
 
 input.addEventListener("change", updateImageDisplay);
 
+// If uploaded file is valid, show image and info
 function updateImageDisplay() {
   if (preview.firstChild) {
     preview.removeChild(preview.firstChild);
@@ -44,6 +45,7 @@ function updateImageDisplay() {
   }
 }
 
+//Show image in canvas, and extract pixel colors array
 function showImage(image) {
   const img = new Image();
   const reader = new FileReader();
@@ -78,10 +80,31 @@ function showImage(image) {
         );
         const rgbValues = getImgRgb(imageData.data);
         const paletteRGB = quantization(rgbValues, 0); // 16 colors (2^MAX_DEPTH); 0 = initial depth (will increase with every recursion until it reaches MAX_DEPTH)
-        createPalette(paletteRGB);
+        createPalette(orderByLuminance(paletteRGB));
       };
     }
   };
+}
+
+function createPalette(RGBPalette) {
+  paletteContainer.innerHTML = "";
+  for (let i = 0; i < RGBPalette.length; i++) {
+    const hexColor = rgbToHex(RGBPalette[i]);
+    const colorDiv = document.createElement("div");
+    colorDiv.style.background = hexColor;
+    colorDiv.appendChild(document.createTextNode(hexColor));
+    paletteContainer.appendChild(colorDiv);
+  }
+}
+
+function orderByLuminance(rgbValues) {
+  return rgbValues.sort((p1, p2) => {
+    return calculateLuminance(p2) - calculateLuminance(p1);
+  });
+}
+
+function calculateLuminance(pixel) {
+  return 0.2126 * pixel.r + 0.7152 * pixel.g + 0.0722 * pixel.b;
 }
 
 function returnFileSize(number) {
@@ -107,35 +130,11 @@ function rgbToHex(pixel) {
   ).toUpperCase();
 }
 
-function createPalette(RGBPalette) {
-  paletteContainer.innerHTML = "";
-  for (let i = 0; i < RGBPalette.length; i++) {
-    const hexColor = rgbToHex(RGBPalette[i]);
-    const colorDiv = document.createElement("div");
-    colorDiv.style.background = hexColor;
-    colorDiv.appendChild(document.createTextNode(hexColor));
-    paletteContainer.appendChild(colorDiv);
-  }
-}
-
 function validFileType(file) {
   return fileTypes.includes(file.type);
 }
 
-function getImgRgb(imageData) {
-  const rgbValues = [];
-  for (let i = 0; i < imageData.length; i += 4) {
-    const rgb = {
-      r: imageData[i],
-      g: imageData[i + 1],
-      b: imageData[i + 2],
-    };
-    rgbValues.push(rgb);
-  }
-  return rgbValues;
-}
-
-// Quantization / Palette creation functions
+// ** Quantization / Palette creation functions **
 
 function findBiggestColorRange(pixels) {
   let rMin = Number.MAX_VALUE;
@@ -166,6 +165,20 @@ function findBiggestColorRange(pixels) {
   } else if (biggestRange === gRange) {
     return "g";
   } else return "b";
+}
+
+// Ignore pixel alpha content and create array of objects {r:x, g:y, b:z}
+function getImgRgb(imageData) {
+  const rgbValues = [];
+  for (let i = 0; i < imageData.length; i += 4) {
+    const rgb = {
+      r: imageData[i],
+      g: imageData[i + 1],
+      b: imageData[i + 2],
+    };
+    rgbValues.push(rgb);
+  }
+  return rgbValues;
 }
 
 function quantization(pixels, depth) {
