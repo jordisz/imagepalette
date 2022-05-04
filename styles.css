@@ -33,6 +33,7 @@ h1 {
 
 .form {
   width: fit-content;
+  margin: auto;
   padding: 1.5rem;
 }
 
