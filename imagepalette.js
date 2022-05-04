@@ -1,4 +1,5 @@
 const input = document.querySelector("input");
+const dropArea = document.querySelector(".drop-area");
 const preview = document.querySelector(".img-info");
 const paletteContainer = document.querySelector(".palette");
 const canvas = document.querySelector(".canvas");
@@ -18,6 +19,30 @@ const fileTypes = [
 ];
 
 input.addEventListener("change", updateImageDisplay);
+
+// drag and drop functionality from this article -> https://www.smashingmagazine.com/2018/01/drag-drop-file-uploader-vanilla-js/
+["dragenter", "dragover", "dragleave", "drop"].forEach((eventName) => {
+  dropArea.addEventListener(eventName, preventDefaults, false);
+});
+
+function preventDefaults(event) {
+  event.preventDefault();
+  event.stopPropagation();
+}
+
+["dragenter", "dragover"].forEach((eventName) => {
+  dropArea.addEventListener(eventName, highlight, false);
+});
+["dragleave", "drop"].forEach((eventName) => {
+  dropArea.addEventListener(eventName, unhighlight, false);
+});
+
+function highlight(event) {
+  dropArea.classList.add("highlight");
+}
+function unhighlight(event) {
+  dropArea.classList.remove("highlight");
+}
 
 // If uploaded file is valid, show image and info
 function updateImageDisplay() {

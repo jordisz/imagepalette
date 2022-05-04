@@ -12,17 +12,21 @@
   <body>
     <div class="container">
       <h1>Color Palette Extractor</h1>
-      <form class="form" action="#">
-        <div>
-          <label for="upload_img">Upload an image (.png, .jpeg, .jpg)</label>
+      <div class="drop-area">
+        <form class="form" action="#">
+          <p>
+            Upload an image (.png, .jpeg, .jpg) with the file dialog or by
+            dragging and droping it onto the dashed region
+          </p>
+          <label class="button" for="upload_img">Select file</label>
           <input
             type="file"
             id="upload_img"
             name="upload_img"
             accept=".jpg, .jpeg, .png"
           />
-        </div>
-      </form>
+        </form>
+      </div>
       <div class="img-container">
         <canvas class="canvas" width="300" height="300"></canvas>
         <div class="img-info"></div>
