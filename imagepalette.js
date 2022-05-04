@@ -44,13 +44,22 @@ function unhighlight(event) {
   dropArea.classList.remove("highlight");
 }
 
+dropArea.addEventListener("drop", handleDrop, false);
+
+function handleDrop(event) {
+  const dt = event.dataTransfer;
+  const files = dt.files;
+
+  updateImageDisplay(files);
+}
+
 // If uploaded file is valid, show image and info
-function updateImageDisplay() {
+function updateImageDisplay(dropped) {
   if (preview.firstChild) {
     preview.removeChild(preview.firstChild);
   }
-  const selectedFile = input.files[0];
-  if (input.files.length === 0) {
+  const selectedFile = dropped[0] || input.files[0];
+  if (!dropped && input.files.length === 0) {
     const info = document.createElement("p");
     info.textContent = "No files selected";
     preview.appendChild(info);
