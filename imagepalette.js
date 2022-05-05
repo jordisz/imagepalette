@@ -93,6 +93,9 @@ function showImage(image) {
       img.src = reader.result;
       // now we have to wait for the image to load ;)
       img.onload = () => {
+        const info = document.querySelector(".multiline-info");
+        info.textContent =
+          info.textContent + `\r\nDimensions: ${img.width}px x ${img.height}px`;
         const hRatio = canvas.width / img.width;
         const vRatio = canvas.height / img.height;
         const ratio = Math.min(hRatio, vRatio);
