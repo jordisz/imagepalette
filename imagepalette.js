@@ -20,15 +20,10 @@ const fileTypes = [
 
 input.addEventListener("change", updateImageDisplay);
 
-// drag and drop functionality from this article -> https://www.smashingmagazine.com/2018/01/drag-drop-file-uploader-vanilla-js/
+// Drag and drop functionality taken from this article -> https://www.smashingmagazine.com/2018/01/drag-drop-file-uploader-vanilla-js/
 ["dragenter", "dragover", "dragleave", "drop"].forEach((eventName) => {
   dropArea.addEventListener(eventName, preventDefaults, false);
 });
-
-function preventDefaults(event) {
-  event.preventDefault();
-  event.stopPropagation();
-}
 
 ["dragenter", "dragover"].forEach((eventName) => {
   dropArea.addEventListener(eventName, highlight, false);
@@ -37,19 +32,24 @@ function preventDefaults(event) {
   dropArea.addEventListener(eventName, unhighlight, false);
 });
 
+dropArea.addEventListener("drop", handleDrop, false);
+
+function preventDefaults(event) {
+  event.preventDefault();
+  event.stopPropagation();
+}
+
 function highlight(event) {
   dropArea.classList.add("highlight");
 }
+
 function unhighlight(event) {
   dropArea.classList.remove("highlight");
 }
 
-dropArea.addEventListener("drop", handleDrop, false);
-
 function handleDrop(event) {
   const dt = event.dataTransfer;
   const files = dt.files;
-
   updateImageDisplay(files);
 }
 
@@ -59,6 +59,7 @@ function updateImageDisplay(dropped) {
     preview.removeChild(preview.firstChild);
   }
   const selectedFile = dropped[0] || input.files[0];
+  console.log(selectedFile);
   if (!dropped && input.files.length === 0) {
     const info = document.createElement("p");
     info.textContent = "No files selected";
@@ -69,7 +70,9 @@ function updateImageDisplay(dropped) {
     if (validFileType(selectedFile)) {
       info.textContent = `File name: ${
         selectedFile.name
-      } \r\nFile size: ${returnFileSize(selectedFile.size)}.`;
+      } \r\nFile size: ${returnFileSize(selectedFile.size)} \r\nFile type: ${
+        selectedFile.type
+      }`;
       showImage(selectedFile);
       preview.appendChild(info);
     } else {
